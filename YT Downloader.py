@@ -19,7 +19,7 @@ class MyApp(App):
         
         self.youtubelink = Label(text="Youtube Link", size_hint=(1,1), pos_hint={"center_x":.5, "center_y":.75}, font_size=20, color=(0,0,0,1))
         
-        self.linkinput = TextInput(size_hint=(.8,.05), pos_hint={"center_x":.5, "center_y":.65}, multiline=False)
+        self.linkinput = TextInput(text="",size_hint=(.8,.05), pos_hint={"center_x":.5, "center_y":.65}, multiline=False, height=50, font_size=15, foreground_color=(0,0,0,1), font_name="Roboto")
         
         layout.add_widget(self.linkinput)
         

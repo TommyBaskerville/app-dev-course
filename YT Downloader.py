@@ -8,10 +8,33 @@ from kivy.uix.image import Image
 
 from kivy.core.window import Window
 
+from functools import partial
+
 Window.size = (500,600)
 Window.clearcolor = (1,1,1,1)
 
 class MyApp(App):
+    
+    def download(self, event,window):
+        self.link = self.linkinput.text
+        self.yt = YouTube(self.link)
+        
+        self.title = str(self.yt.title)
+        self.views = str(self.yt.views)
+        self.length = str(self.yt.length)
+        
+        print("Title: " + self.title)
+        print("Views: " + self.views)
+        print("Length: " + self.length)
+    
+        self.titleLabel.text = "Title: " + self.title
+        self.viewsLabel.text = "Views: " + self.views
+        self.lengthLabel.text = "Length: " + self.length
+        
+        self.titleLabel.pos_hint = {"center_x":.5, "center_y":.45}
+        self.viewsLabel.pos_hint = {"center_x":.5, "center_y":.35}
+        self.lengthLabel.pos_hint = {"center_x":.5, "center_y":.25}
+    
     def build(self):
         layout = RelativeLayout()
         
@@ -21,11 +44,32 @@ class MyApp(App):
         
         self.linkinput = TextInput(text="",size_hint=(.8,.05), pos_hint={"center_x":.5, "center_y":.65}, multiline=False, height=50, font_size=15, foreground_color=(0,0,0,1), font_name="Roboto")
         
+        self.linkbutton = Button(text="Download", size_hint=(.8,.05), pos_hint={"center_x":.5, "center_y":.55}, background_color=(0,0,0,1), color=(1,1,1,1), font_size=15, font_name="Roboto")
+        
+        self.linkbutton.bind(on_press = partial(self.download, layout))
+        
+        self.titleLabel = Label(text=" ", size_hint=(1,1), pos_hint={"center_x":.5, "center_y":.45}, font_size=20, color=(0,0,0,1))
+        
+        self.viewsLabel = Label(text=" ", size_hint=(1,1), pos_hint={"center_x":.5, "center_y":.35}, font_size=20, color=(0,0,0,1))
+        
+        self.lengthLabel = Label(text=" ", size_hint=(1,1), pos_hint={"center_x":.5, "center_y":.25}, font_size=20, color=(0,0,0,1))
+        
+        
+        layout.add_widget(self.linkbutton)
+        
         layout.add_widget(self.linkinput)
         
         layout.add_widget(self.youtubelink)
         
         layout.add_widget(self.image)
+        
+        layout.add_widget(self.titleLabel)
+        
+        layout.add_widget(self.viewsLabel)
+        
+        layout.add_widget(self.lengthLabel)
+        
+        
         return layout
     
 if __name__ == "__main__":

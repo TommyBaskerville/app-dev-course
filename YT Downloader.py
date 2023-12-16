@@ -15,7 +15,7 @@ Window.clearcolor = (1,1,1,1)
 
 class MyApp(App):
     
-    def download(self, event,window):
+    def getlink(self, event,window):
         self.link = self.linkinput.text
         self.yt = YouTube(self.link)
         
@@ -34,7 +34,16 @@ class MyApp(App):
         self.titleLabel.pos_hint = {"center_x":.5, "center_y":.45}
         self.viewsLabel.pos_hint = {"center_x":.5, "center_y":.35}
         self.lengthLabel.pos_hint = {"center_x":.5, "center_y":.25}
-    
+        
+        self.downloadbutton.opacity = 1
+        self.downloadbutton.disabled = False
+        
+    def download(self, event, window):
+        self.link = self.linkinput.text
+        yt = YouTube(self.link)
+        yt.streams.filter(progressive=True, file_extension='mp4').order_by('resolution').desc().first().download()
+        
+        
     def build(self):
         layout = RelativeLayout()
         
@@ -44,9 +53,9 @@ class MyApp(App):
         
         self.linkinput = TextInput(text="",size_hint=(.8,.05), pos_hint={"center_x":.5, "center_y":.65}, multiline=False, height=50, font_size=15, foreground_color=(0,0,0,1), font_name="Roboto")
         
-        self.linkbutton = Button(text="Download", size_hint=(.8,.05), pos_hint={"center_x":.5, "center_y":.55}, background_color=(0,0,0,1), color=(1,1,1,1), font_size=15, font_name="Roboto")
+        self.linkbutton = Button(text="Getlink", size_hint=(.8,.05), pos_hint={"center_x":.5, "center_y":.55}, background_color=(0,0,0,1), color=(1,1,1,1), font_size=15, font_name="Roboto")
         
-        self.linkbutton.bind(on_press = partial(self.download, layout))
+        self.linkbutton.bind(on_press = partial(self.getlink, layout))
         
         self.titleLabel = Label(text=" ", size_hint=(1,1), pos_hint={"center_x":.5, "center_y":.45}, font_size=20, color=(0,0,0,1))
         
@@ -54,7 +63,11 @@ class MyApp(App):
         
         self.lengthLabel = Label(text=" ", size_hint=(1,1), pos_hint={"center_x":.5, "center_y":.25}, font_size=20, color=(0,0,0,1))
         
+        self.downloadbutton = Button(text="Download", size_hint=(.8,.05), pos_hint={"center_x":.5, "center_y":.18}, background_color=(0,0,0,1), color=(1,1,1,1), font_size=15, font_name="Roboto", opacity=0, disabled=True)
         
+        self.downloadbutton.bind(on_press = partial(self.download, layout))
+        
+    
         layout.add_widget(self.linkbutton)
         
         layout.add_widget(self.linkinput)
@@ -68,6 +81,8 @@ class MyApp(App):
         layout.add_widget(self.viewsLabel)
         
         layout.add_widget(self.lengthLabel)
+        
+        layout.add_widget(self.downloadbutton)
         
         
         return layout

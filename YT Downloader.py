@@ -10,6 +10,7 @@ from kivy.core.window import Window
 
 from functools import partial
 
+
 Window.size = (500,600)
 Window.clearcolor = (1,1,1,1)
 
@@ -40,7 +41,7 @@ class MyApp(App):
         
     def download(self, event, window):
         yt = YouTube(self.link)
-        yt.streams.filter(progressive=True, file_extension='mp4').order_by('resolution').desc().first().download()
+        yt.streams.filter(progressive=True, file_extension='mp4').order_by('resolution').desc().first().download("E:/Cursos/Mobile_app/app-dev-course")
         
         print("Downloaded")
         
